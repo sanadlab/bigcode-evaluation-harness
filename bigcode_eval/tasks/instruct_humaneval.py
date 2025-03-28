@@ -11,6 +11,7 @@ Homepage: https://github.com/openai/human-eval
 from bigcode_eval.base import Task
 from bigcode_eval.utils import remove_after_return
 from bigcode_eval.tasks.custom_metrics.code_eval import compute_code_eval
+import json
 
 _CITATION = ""
 
@@ -69,7 +70,8 @@ class InstructHumanEval(Task):
             predictions=generations,
         )
 
-        detailed_results.to_json("detailed_results.json")
+        with open("shared/detailed_results.json", "w") as f:
+            json.dump(detailed_results, f, indent=4)
 
         return overall_results
 
