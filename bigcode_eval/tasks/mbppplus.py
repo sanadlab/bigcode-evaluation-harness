@@ -10,6 +10,7 @@ removes low-quality and ill-formed tasks for benchmark quality control.
 Homepage: https://github.com/evalplus/evalplus
 """
 
+import json
 import os
 
 from bigcode_eval.tasks.mbpp import MBPP
@@ -66,9 +67,13 @@ class MBPPPlus(MBPP):
         :param references: list(str)
             list of str containing refrences
         """
-        results, _ = compute_code_eval(
+        overall_results, detailed_results = compute_code_eval(
             references=references,
             predictions=generations,
             timeout=10.0,  # 10s timeout
         )
-        return results
+
+        with open("shared/detailed_results.json", "w") as f:
+            json.dump(detailed_results, f, indent=4)
+
+        return overall_results
